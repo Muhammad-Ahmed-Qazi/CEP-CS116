@@ -1,0 +1,2 @@
+1, Qazi1, hamza, 10000
+2, qazi2, muhammad, 15000

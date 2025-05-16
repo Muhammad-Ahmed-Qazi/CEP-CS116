@@ -1,0 +1,8 @@
+Tables
+['FY24 projects', 'FY25 projects']
+
+Fields & Lengths
+{'FY24 projects': {'sr no': 5, 'Project Name': 40, 'Resource': 40, 'Cost': 10}, 'FY25 projects': {'sr no': 5, 'Project Name': 40, 'Resource': 40, 'Cost': 10}}
+
+Primary Keys
+{'FY24 projects': 'sr no', 'FY25 projects': 'sr no'}

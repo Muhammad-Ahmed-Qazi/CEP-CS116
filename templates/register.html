@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoHire - Register</title>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/fonts/bootstrap-icons.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+
+</head>
+
+<body class="vh-100 d-flex justify-content-center align-items-center bg-light">
+
+    <div class="container">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-4 card p-5 border border-rounded border-tertiary shadow-sm">
+                    <h2 class="">Register Account</h2>
+                    <div class="container pt-4">
+                        <form id="registerForm">
+                            <div class="mb-3">
+                                <label for="nameInp" class="form-label">Name</label>
+                                <input type="name" class="form-control" id="nameInp" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="emailInp" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="emailInp" name="email" required
+                                    autocomplete="email">
+                                <div id="passwordHelpBlock" class="form-text">
+                                    Use @auto-hire.com email address to register as an Admin.
+                                </div>
+                                <div class="form-text text-danger" id="invalidEmail"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPasswordInp" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPasswordInp" name="newPassword"
+                                    required autocomplete="new-password">
+                                <div class="form-text text-danger" id="invalidPassword"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPasswordInp" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPasswordInp"
+                                    name="confirmPassword" required autocomplete="new-password">
+                                <div class="form-text text-danger" id="invalidConfirmPassword"></div>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <label for="role" class="form-label">Role</label> -->
+                                <input type="hidden" name="role" id="role" value="user">
+                                <!-- <div class="form-text">This field is automatically selected based on the email domain
+                                    you are using.</div>
+                            </div> -->
+                            <!-- Extra Fields for User -->
+                            <div id="user-extra-fields" class="">
+                                <div class="mb-3">
+                                    <label for="balanceInp" class="form-label">Account balance</label>
+                                    <input type="number" class="form-control" id="balanceInp" name="balance" min="0"
+                                        required>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary w-100" onclick="register()">Create
+                                Account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const emailField = document.querySelector('input[name="email"]');
+        const extraFields = document.getElementById('user-extra-fields');
+
+        emailField.addEventListener('input', function () {
+            const email = emailField.value.trim();
+            if (email.endsWith('@auto-hire.com')) {
+                document.getElementById('role').value = 'admin';
+                extraFields.classList.add('d-none');
+                Array.from(extraFields.querySelectorAll("input")).forEach(input => input.required = false);
+            } else {
+                document.getElementById('role').value = 'user';
+                extraFields.classList.remove('d-none');
+                Array.from(extraFields.querySelectorAll("input")).forEach(input => input.required = true);
+            }
+        });
+    </script>
+    <script src="static/js/bootstrap.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+
+</html>

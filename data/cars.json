@@ -1,0 +1,26 @@
+[
+    {
+        "vin": "5678",
+        "model": "Ford Transit",
+        "base_rate": 150,
+        "img_url": "http://example.com/ford.jpg",
+        "category": "CommercialCar",
+        "rental_history": {
+            "active": null,
+            "inactive": []
+        },
+        "cargo_capacity": 1000
+    },
+    {
+        "vin": "1000",
+        "model": "Ford Transit",
+        "base_rate": 150,
+        "img_url": "http://example.com/ford.jpg",
+        "category": "CommercialCar",
+        "rental_history": {
+            "active": null,
+            "inactive": []
+        },
+        "cargo_capacity": 1000
+    }
+]

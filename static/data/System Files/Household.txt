@@ -1,0 +1,8 @@
+Tables
+['Grocery', 'Electricity utilisation']
+
+Fields & Lengths
+{'Grocery': {'Item Name': 20, 'Quantity Available': 2}, 'Electricity utilisation': {'Date': 10, 'Units used': 2}}
+
+Primary Keys
+{'Grocery': 'Item Name', 'Electricity utilisation': 'Date'}

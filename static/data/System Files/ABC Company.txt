@@ -1,0 +1,8 @@
+Tables
+['Employees']
+
+Fields & Lengths
+{'Employees': {'Employee ID': 10, 'Name': 50, 'Department': 20, 'Email': 50, 'Mobile No.': 15}}
+
+Primary Keys
+{'Employees': 'Employee ID'}

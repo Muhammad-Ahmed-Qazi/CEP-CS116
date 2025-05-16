@@ -1,0 +1,41 @@
+[
+    {
+        "name": "Admin",
+        "email": "admin123@auto-hire.com",
+        "password_hash": "admin123",
+        "role": "admin"
+    },
+    {
+        "name": "Muhammad Ahmed Qazi",
+        "email": "qmuhammadahmed@gmail.com",
+        "password_hash": "test",
+        "role": "user",
+        "balance": 0,
+        "rental_history": {
+            "active": null,
+            "inactive": []
+        }
+    },
+    {
+        "name": "John Doe",
+        "email": "johndoe@gmail.com",
+        "password_hash": "test",
+        "role": "user",
+        "balance": "1234",
+        "rental_history": {
+            "active": null,
+            "inactive": []
+        }
+    },
+    {
+        "name": "Mujtaba Jawaid Rao",
+        "email": "mujtaba@xyz.com",
+        "password_hash": "test123",
+        "role": "user",
+        "balance": "1200",
+        "rental_history": {
+            "active": null,
+            "inactive": []
+        }
+    }
+]

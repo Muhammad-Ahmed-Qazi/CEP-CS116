@@ -1,0 +1,8 @@
+Tables
+['Students', 'Courses']
+
+Fields & Lengths
+{'Students': {'Roll #': 10, 'Name': 50, 'Email': 50, 'Section': 1}, 'Courses': {'Code #': 10, 'Name': 50, 'Instructor': 50, 'Credit Hrs.': 1}}
+
+Primary Keys
+{'Students': 'Roll #', 'Courses': 'Code #'}
