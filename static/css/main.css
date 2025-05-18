@@ -1,0 +1,33 @@
+.no-caret::after {
+  display: none !important;
+}
+
+.py-7 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.container-fluid.hero-bg {
+  background: url("../images/hero.png") center/cover no-repeat;
+  color: white;
+  height: 600px;
+}
+
+
+.glass-box {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.75rem;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.custom-card:hover {
+  border-color: #0d6efd; /* Bootstrap primary */
+}

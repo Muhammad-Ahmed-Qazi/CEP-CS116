@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Cars - AutoHire</title>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/fonts/bootstrap-icons.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+
+</head>
+
+<body>
+    {% include 'components/alerts.html' %}
+    <nav class="navbar navbar-expand-lg border-body bg-primary p-2">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='images/header.png') }}" alt="AutoHire" height="35"
+                    class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" aria-current="page" href="/">Home</a>
+                    </li>
+                    {% if role == "admin" %}
+                    <li class="nav-item active dropdown">
+                        <button class="btn text-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu">
+                            <li><a class="active dropdown-item" href="/admin-fleet">Manage Fleet</a></li>
+                            <li><a class="dropdown-item" href="/admin-report">Report Management</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="float-end p-2">
+                <div class="d-flex justify-content-start text-light">
+                    <!-- Profile Image -->
+                    <img src="{{ user.get_profile_image_url() }}" alt="user.get_name()"
+                        class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+
+                    <!-- Text: name & email -->
+                    <div class="ms-2">
+                        <div class="fw-semibold text-start">{{ user.get_name() }}</div>
+                        <div class="text-light text-start small">{{ user.get_email() }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="vr mx-3" style="color: white;"></div>
+            <div class="float-end p-1">
+                <a href="/profile" class="btn btn-primary">Profile</a>
+            </div>
+            <div class="float-end p-1">
+                <a href="/logout" class="btn btn-primary" style="background-color: #f86716;">Logout <i
+                        class="bi bi-box-arrow-right" style="margin-left: 5px;"></i></a>
+            </div>
+        </div>
+
+        </div>
+    </nav>
+
+    {% block content %}
+    <div class="container py-5">
+        <!-- Header -->
+        <div class="mb-4 text-center">
+            <h2 class="fw-bold">Available Cars</h2>
+            <p class="text-muted">From {{ start_date }} to {{ end_date }}</p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <ul class="nav nav-pills justify-content-center mb-4">
+            <li class="nav-item">
+                <a class="nav-link {% if not selected_type %}active{% endif %}"
+                    href="{{ url_for('available_cars') }}?start={{ start_date }}&end={{ end_date }}">All</a>
+            </li>
+            {% for category in ["EconomyCar", "LuxuryCar", "CommercialCar"] %}
+            <li class="nav-item">
+                <a class="nav-link {% if selected_type == category %}active{% endif %}"
+                    href="{{ url_for('available_cars') }}?start={{ start_date }}&end={{ end_date }}&type={{ category }}">
+                    {{ category.replace('Car', '') }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Car Cards -->
+        <div class="row g-4">
+            {% if available_cars %}
+            {% for car in available_cars %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card custom-card h-100">
+                    <img src="{{ car.img_url }}" class="card-img-top" style="height: 180px; object-fit: cover;"
+                        alt="{{ car.model }}">
+
+                    <div class="card-body">
+                        <span class="badge bg-primary mb-2">{{ car.__class__.__name__.replace('Car', '') }}</span>
+                        <h5 class="card-title fw-semibold">{{ car.model }}</h5>
+                        <p class="text-muted small mb-2">VIN: {{ car.vin }}</p>
+
+                        <ul class="list-unstyled small">
+                            <li><i class="bi bi-people-fill me-2"></i>Seats: <b>{{ car.seating_capacity }}</b></li>
+                            <li><i class="bi bi-palette-fill me-2"></i>Colour: <b>{{ car.colour }}</b></li>
+                            <li><i class="bi bi-currency-rupee me-2"></i>Base Rate: <b>{{ car.base_rate }}
+                                    PKR/day</b></li>
+                        </ul>
+                    </div>
+                    <button class="btn mt-2 btn-outline-primary view-details-btn"
+                        style="border-radius: 0px 0px 10px 10px;"
+                        data-car='{{ car.to_dict() | tojson | safe }}' data-start="{{ start_date }}"
+                        data-end="{{ end_date }}">
+                        View Details
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No cars available for the selected dates.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Car Details Modal -->
+    <div class="modal fade" id="carDetailsModal" tabindex="-1" aria-labelledby="carModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="carModalLabel">Car Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4 px-4">
+                    <div class="row align-items-start g-3">
+                        <!-- Image -->
+                        <div class="col-md-5">
+                            <img id="modalImg" class="img-fluid rounded border" alt="Car Image">
+                        </div>
+
+                        <!-- Details -->
+                        <div class="col-md-7">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h5 class="fw-bold mb-1" id="modalModel"></h5>
+                                <span class="badge bg-primary" id="modalType"></span>
+                            </div>
+
+                            <p class="mb-1 text-muted small">VIN:</p>
+                            <p class="fw-semibold mb-2" id="modalVin"></p>
+
+                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                <div>
+                                    <p class="mb-1 text-muted small">Colour:</p>
+                                    <p class="fw-semibold mb-0" id="modalColour"></p>
+                                </div>
+                                <div>
+                                    <p class="mb-1 text-muted small">Seating:</p>
+                                    <p class="fw-semibold mb-0" id="modalSeats"></p>
+                                </div>
+                            </div>
+
+                            <div id="modalExtraSpec" class="mb-2"></div>
+
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="d-flex align-items-baseline gap-2">
+                                    <h4 class="fw-bold text-primary mb-0" id="modalRate"></h4>
+                                    <span class="text-muted">/day</span>
+                                </div>
+                                <a class="btn btn-success btn-sm px-4" id="modalReserveBtn">Reserve</a>
+                            </div>
+
+                            <h6 class="fw-semibold mt-3">Features</h6>
+                            <div class="d-flex flex-wrap gap-2 mb-3" id="modalFeatures"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const detailButtons = document.querySelectorAll(".view-details-btn");
+
+            detailButtons.forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const car = JSON.parse(this.dataset.car);
+                    const start = this.dataset.start;
+                    const end = this.dataset.end;
+
+                    openCarModal(car, start, end);
+                });
+            });
+        });
+    </script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+
+</html>

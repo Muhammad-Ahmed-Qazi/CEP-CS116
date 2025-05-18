@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoHire - Register</title>
+    <title>Register - AutoHire</title>
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <link rel="stylesheet" href="static/fonts/bootstrap-icons.css">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
@@ -13,57 +13,91 @@
 </head>
 
 <body class="vh-100 d-flex justify-content-center align-items-center bg-light">
-
     <div class="container">
         <div class="container">
             <div class="row d-flex justify-content-center">
-                <div class="col-md-4 card p-5 border border-rounded border-tertiary shadow-sm">
+                <div class="col-md-8 card p-5 border border-rounded border-tertiary shadow-sm">
                     <h2 class="">Register Account</h2>
                     <div class="container pt-4">
                         <form id="registerForm">
-                            <div class="mb-3">
-                                <label for="nameInp" class="form-label">Name</label>
-                                <input type="name" class="form-control" id="nameInp" name="name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="emailInp" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="emailInp" name="email" required
-                                    autocomplete="email">
-                                <div id="passwordHelpBlock" class="form-text">
-                                    Use @auto-hire.com email address to register as an Admin.
+                            <div class="row">
+                                <!-- Column 1 -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="nameInp" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="nameInp" name="name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="emailInp" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="emailInp" name="email" required
+                                            autocomplete="email">
+                                        <div id="passwordHelpBlock" class="form-text">
+                                            Use @auto-hire.com email address to register as an Admin.
+                                        </div>
+                                        <div class="form-text text-danger" id="invalidEmail"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPasswordInp" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="newPasswordInp"
+                                            name="newPassword" required autocomplete="new-password">
+                                        <div class="form-text text-danger" id="invalidPassword"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmPasswordInp" class="form-label">Confirm Password</label>
+                                        <input type="password" class="form-control" id="confirmPasswordInp"
+                                            name="confirmPassword" required autocomplete="new-password">
+                                        <div class="form-text text-danger" id="invalidConfirmPassword"></div>
+                                    </div>
+                                    <!-- Submit Button -->
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-primary w-100"
+                                                onclick="register()">Create
+                                                Account</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-text text-danger" id="invalidEmail"></div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="newPasswordInp" class="form-label">New Password</label>
-                                <input type="password" class="form-control" id="newPasswordInp" name="newPassword"
-                                    required autocomplete="new-password">
-                                <div class="form-text text-danger" id="invalidPassword"></div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmPasswordInp" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirmPasswordInp"
-                                    name="confirmPassword" required autocomplete="new-password">
-                                <div class="form-text text-danger" id="invalidConfirmPassword"></div>
-                            </div>
-                            <!-- <div class="mb-3">
-                                <label for="role" class="form-label">Role</label> -->
-                                <input type="hidden" name="role" id="role" value="user">
-                                <!-- <div class="form-text">This field is automatically selected based on the email domain
-                                    you are using.</div>
-                            </div> -->
-                            <!-- Extra Fields for User -->
-                            <div id="user-extra-fields" class="">
-                                <div class="mb-3">
-                                    <label for="balanceInp" class="form-label">Account balance</label>
-                                    <input type="number" class="form-control" id="balanceInp" name="balance" min="0"
-                                        required>
+
+                                <!-- Column 2 -->
+                                <div class="col-md-6">
+                                    <!-- Hidden role -->
+                                    <div class="mb-3 visually-hidden">
+                                        <label for="role" class="form-label">Role</label>
+                                        <input type="text" name="role" id="role" value="user">
+                                        <div class="form-text">This field is auto-set based on your email domain.</div>
+                                    </div>
+
+                                    <!-- User-only extra fields -->
+                                    <div id="user-extra-fields">
+                                        <div class="mb-3">
+                                            <label for="balanceInp" class="form-label">Account Balance</label>
+                                            <input type="number" class="form-control" id="balanceInp" name="balance"
+                                                min="0" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="licenseNumberInp" class="form-label">License Number</label>
+                                            <input type="text" class="form-control" id="licenseNumberInp"
+                                                name="license_number" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="licenseExpiryInp" class="form-label">License Expiry Date</label>
+                                            <input type="date" class="form-control" id="licenseExpiryInp"
+                                                name="license_expiry" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="profileImageInp" class="form-label">Profile Image URL</label>
+                                        <input type="url" class="form-control" id="profileImageInp"
+                                            name="profile_image_url">
+                                        <div class="form-text">Enter a direct link to your profile image.</div>
+                                    </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary w-100" onclick="register()">Create
-                                Account</button>
+
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>

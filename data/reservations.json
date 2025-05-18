@@ -1,0 +1,35 @@
+[
+    {
+        "id": "12bcaf21-9dc3-4ca6-9915-d27aca19c113",
+        "user_email": "qmuhammadahmed@gmail.com",
+        "car_vin": "ECO123456789TEST01",
+        "start_date": "2025-05-18",
+        "end_date": "2025-05-19",
+        "cost": 5370.0,
+        "status": "active",
+        "created_at": "2025-05-18 11:01:43",
+        "return_date": "2025-05-18"
+    },
+    {
+        "id": "b58a73fa-3725-418e-b69b-02d2fa28023c",
+        "user_email": "qmuhammadahmed@gmail.com",
+        "car_vin": "ECO123456789TEST01",
+        "start_date": "2025-05-18",
+        "end_date": "2025-05-18",
+        "cost": 2685.0,
+        "status": "active",
+        "created_at": "2025-05-18 11:05:20",
+        "return_date": "2025-05-18"
+    },
+    {
+        "id": "c02993c0-382e-48d8-9f9b-e99181b343c0",
+        "user_email": "johndoe@gmail.com",
+        "car_vin": "LUX987654321TEST01",
+        "start_date": "2025-05-18",
+        "end_date": "2025-05-19",
+        "cost": 46000.0,
+        "status": "active",
+        "created_at": "2025-05-18 11:29:27",
+        "return_date": null
+    }
+]

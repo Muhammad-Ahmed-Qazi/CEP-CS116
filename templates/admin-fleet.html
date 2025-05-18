@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Management - AutoHire</title>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/fonts/bootstrap-icons.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+
+</head>
+
+<body>
+    {% include 'components/alerts.html' %}
+    <nav class="navbar navbar-expand-lg border-body bg-primary p-2">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='images/header.png') }}" alt="AutoHire" height="35"
+                    class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" aria-current="page" href="/">Home</a>
+                    </li>
+                    {% if role == "admin" %}
+                    <li class="nav-item active dropdown">
+                        <button class="btn text-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu">
+                            <li><a class="active dropdown-item" href="/admin-fleet">Manage Fleet</a></li>
+                            <li><a class="dropdown-item" href="/admin-report">Report Management</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="float-end p-2">
+                <div class="d-flex justify-content-start text-light">
+                    <!-- Profile Image -->
+                    <img src="{{ user.get_profile_image_url() }}" alt="Profile"
+                        class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+
+                    <!-- Text: name & email -->
+                    <div class="ms-2">
+                        <div class="fw-semibold text-start">{{ user.get_name() }}</div>
+                        <div class="text-light text-start small">{{ user.get_email() }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="vr mx-3" style="color: white;"></div>
+            <div class="float-end p-1">
+                <a href="/profile" class="btn btn-primary">Profile</a>
+            </div>
+            <div class="float-end p-1">
+                <a href="/logout" class="btn btn-primary" style="background-color: #f86716;">Logout <i
+                        class="bi bi-box-arrow-right" style="margin-left: 5px;"></i></a>
+            </div>
+        </div>
+
+        </div>
+    </nav>
+
+    <main class="container mt-5">
+        <h1 class="">Fleet Management</h1>
+        <p class="mb-4 text-muted">Manage the rental fleet. View list of current fleet and add or remove cars.</p>
+
+        <section class="mb-5">
+            <div class="d-flex justify-content-between">
+                <h4 class="mb-3">Fleet Overview</h4>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary btn-sm" onclick="openAddCarModal()">
+                        <i class="bi bi-plus-lg me-2"></i> Add New Car
+                      </button>
+                      
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row g-4">
+                        {% for car in cars %}
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="card h-100 shadow-sm">
+                                <!-- Car Image -->
+                                <img src="{{ car.get_img_url() }}" class="card-img-top" alt="{{ car.get_model() }}"
+                                    style="height: 180px; object-fit: cover;">
+
+                                <!-- Category Badge -->
+                                <div class="card-header text-center text-white bg-primary">
+                                    {{ car.__class__.__name__ }}
+                                </div>
+
+                                <div class="card-body">
+                                    <p class="text-muted small mb-1">VIN: {{ car.get_vin() }}</p>
+                                    <h5 class="card-title">{{ car.get_model() }}</h5>
+                                </div>
+
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between">Seating Capacity: <b>{{
+                                            car.get_seating_capacity() }}</b></li>
+
+                                    {% if car.__class__.__name__ == 'EconomyCar' %}
+                                    <li class="list-group-item d-flex justify-content-between">Fuel Efficiency: <b>{{
+                                            car.get_fuel_efficiency() }} km/l</b></li>
+                                    {% elif car.__class__.__name__ == 'LuxuryCar' %}
+                                    <li class="list-group-item d-flex justify-content-between">Chauffeur: <b>{{ 'Yes' if
+                                            car.get_chauffeur_available() else 'No' }}</b></li>
+                                    {% elif car.__class__.__name__ == 'CommercialCar' %}
+                                    <li class="list-group-item d-flex justify-content-between">Cargo Capacity: <b>{{
+                                            car.get_cargo_capacity() }} kg</b></li>
+                                    {% endif %}
+
+                                    <li class="list-group-item d-flex justify-content-between">Colour: <b>{{
+                                            car.get_colour()
+                                            }}</b></li>
+                                    <li class="list-group-item d-flex justify-content-between">Status:
+                                        <b
+                                            class="{{ 'text-success' if not car.get_active_reservation() else 'text-danger' }}">
+                                            {{ 'Available' if not car.get_active_reservation() else 'Reserved' }}
+                                        </b>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">Base Rate:
+                                        <h5 class="text-end">{{ car.get_base_rate() }} PKR</h5>
+                                    </li>
+                                </ul>
+
+                                <div class="card-body text-end">
+                                    <button class="btn btn-warning btn-sm" data-car='{{ car.to_dict()|tojson | safe }}'
+                                        onclick="handleEditButtonClick(this)"><i class="bi bi-pencil-fill" style="margin-right: 5px;"></i> Edit</button>
+                                    <form method="POST" action="/admin/delete_car/{{ car.vin }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this car?');"
+                                        class="d-inline">
+                                        <button class="btn btn-danger btn-sm"><i class="bi bi-trash-fill" style="margin-right: 5px;"></i> Delete</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add Car Modal -->
+    <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content p-3">
+                <form method="POST" id="carForm" action="/admin/add_car">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="carModalLabel">Modal Title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Basic Info -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="vin" class="form-label">VIN</label>
+                                <input type="text" class="form-control" id="vin" name="vin" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="model" class="form-label">Model</label>
+                                <input type="text" class="form-control" id="model" name="model" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="base_rate" class="form-label">Base Rate (PKR)</label>
+                                <input type="number" class="form-control" id="base_rate" name="base_rate" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="seating_capacity" class="form-label">Seating Capacity</label>
+                                <input type="number" class="form-control" id="seating_capacity" name="seating_capacity"
+                                    required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="colour" class="form-label">Colour</label>
+                                <input type="text" class="form-control" id="colour" name="colour" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="car_type" class="form-label">Category</label>
+                                <select class="form-select" id="car_type" name="car_type" required
+                                    onchange="toggleCarFields(this.value)">
+                                    <option value="" disabled selected>Select type</option>
+                                    <option value="EconomyCar">Economy</option>
+                                    <option value="LuxuryCar">Luxury</option>
+                                    <option value="CommercialCar">Commercial</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="img_url" class="form-label">Image URL</label>
+                                <input type="url" class="form-control" id="img_url" name="img_url">
+                            </div>
+                        </div>
+
+                        <!-- Features -->
+                        <fieldset class="border rounded p-3 mb-3">
+                            <legend class="w-auto px-2 fs-6">Features</legend>
+                            <div class="row">
+                                {% for feature in ['air_conditioning', 'bluetooth', 'gps', 'usb_ports', 'sunroof',
+                                'rear_camera'] %}
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="features[{{ feature }}]"
+                                            id="{{ feature }}" value="true">
+                                        <label class="form-check-label" for="{{ feature }}">
+                                            {{ feature.replace('_', ' ').title() }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+
+                        <!-- Dynamic Fields by Category -->
+                        <div id="economy-fields" class="d-none mb-3">
+                            <label for="fuel_efficiency" class="form-label">Fuel Efficiency (km/l)</label>
+                            <input type="number" min="1" step="0.1" class="form-control" name="fuel_efficiency"
+                                id="fuel_efficiency">
+                        </div>
+
+                        <div id="luxury-fields" class="d-none mb-3">
+                            <label for="chauffeur_available" class="form-label">Chauffeur Available</label>
+                            <select class="form-select" name="chauffeur_available" id="chauffeur_available">
+                                <option value="1">Yes</option>
+                                <option value="0" selected>No</option>
+                            </select>
+                        </div>
+
+                        <div id="commercial-fields" class="d-none mb-3">
+                            <label for="cargo_capacity" class="form-label">Cargo Capacity (kg)</label>
+                            <input type="number" class="form-control" name="cargo_capacity" id="cargo_capacity">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><i class="bi bi-plus" style="margin-right: 5px;"></i>Add Car</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+
+</html>

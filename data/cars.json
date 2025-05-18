@@ -1,26 +1,53 @@
 [
     {
-        "vin": "5678",
-        "model": "Ford Transit",
-        "base_rate": 150,
-        "img_url": "http://example.com/ford.jpg",
-        "category": "CommercialCar",
-        "rental_history": {
-            "active": null,
-            "inactive": []
+        "vin": "ECO123456789TEST01",
+        "model": "Suzuki Alto VXR",
+        "base_rate": 2500.0,
+        "img_url": "https://cache1.pakwheels.com/system/car_generation_pictures/8765/original/Cover.jpg?1746011563",
+        "seating_capacity": 4,
+        "colour": "White",
+        "car_type": "EconomyCar",
+        "features": {
+            "air_conditioning": true,
+            "bluetooth": true,
+            "gps": false,
+            "usb_ports": true,
+            "sunroof": false,
+            "rear_camera": true
         },
-        "cargo_capacity": 1000
+        "category": "EconomyCar",
+        "rental_history": {
+            "active": [],
+            "inactive": [
+                "12bcaf21-9dc3-4ca6-9915-d27aca19c113",
+                "b58a73fa-3725-418e-b69b-02d2fa28023c"
+            ]
+        },
+        "fuel_efficiency": 18.5
     },
     {
-        "vin": "1000",
-        "model": "Ford Transit",
-        "base_rate": 150,
-        "img_url": "http://example.com/ford.jpg",
-        "category": "CommercialCar",
+        "vin": "LUX987654321TEST01",
+        "model": "Mercedes-Benz E200",
+        "base_rate": 20000.0,
+        "img_url": "https://images.prismic.io/carwow/49d2e279-22c2-4026-b4da-cbeda8b988b4_2023+Mercedes+E-Class+side+static.jpg?auto=format&cs=tinysrgb&fit=crop&q=60&w=750",
+        "seating_capacity": 4,
+        "colour": "Grey",
+        "car_type": "LuxuryCar",
+        "features": {
+            "air_conditioning": true,
+            "bluetooth": true,
+            "gps": true,
+            "usb_ports": true,
+            "sunroof": true,
+            "rear_camera": true
+        },
+        "category": "LuxuryCar",
         "rental_history": {
-            "active": null,
+            "active": [
+                "c02993c0-382e-48d8-9f9b-e99181b343c0"
+            ],
             "inactive": []
         },
-        "cargo_capacity": 1000
+        "chauffeur_available": true
     }
 ]

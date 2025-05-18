@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoHire</title>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/fonts/bootstrap-icons.css">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/x-icon">
+
+</head>
+
+<body class="">
+    {% include 'components/alerts.html' %}
+    <nav class="navbar navbar-expand-lg border-body bg-primary p-2">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='images/header.png') }}" alt="AutoHire" height="35"
+                    class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item fw-bold">
+                        <a class="nav-link text-light" aria-current="page" href="/">Home</a>
+                    </li>
+                    {% if role == "admin" %}
+                    <li class="nav-item dropdown">
+                        <button class="btn text-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu">
+                            <li><a class="dropdown-item" href="/admin-fleet">Manage Fleet</a></li>
+                            <li><a class="dropdown-item" href="/admin-report">Report Management</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="float-end p-2">
+                <div class="d-flex justify-content-start text-light">
+                    <!-- Profile Image -->
+                    <img src="{{ user.get_profile_image_url() }}" alt="user.get_name()"
+                        class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+
+                    <!-- Text: name & email -->
+                    <div class="ms-2">
+                        <div class="fw-semibold text-start">{{ user.get_name() }}</div>
+                        <div class="text-light text-start small">{{ user.get_email() }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="vr mx-3" style="color: white;"></div>
+            <div class="float-end p-1">
+                <a href="/profile" class="btn btn-primary">Profile</a>
+            </div>
+            <div class="float-end p-1">
+                <a href="/logout" class="btn btn-primary" style="background-color: #f86716;">Logout <i
+                        class="bi bi-box-arrow-right" style="margin-left: 5px;"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid hero-bg bg-light d-flex align-items-center justify-content-center">
+        <div class="glass-box text-center p-5 rounded shadow">
+            <h1 class="display-4 fw-bold text-white mb-3">AutoHire</h1>
+            <p class="lead text-white mb-4">Book your next ride with ease and comfort</p>
+
+            <form class="row justify-content-center align-items-end g-3" action="/cars" method="get">
+                <!-- Start Date -->
+                <div class="col-auto">
+                    <label for="start" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="start" name="start" required>
+                </div>
+
+                <!-- End Date -->
+                <div class="col-auto">
+                    <label for="end" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="end" name="end" required>
+                </div>
+
+                <!-- Button -->
+                <div class="col-auto">
+                    <button type="submit" class="btn text-light px-4" style="background-color: #f86716;"><i class="bi bi-search" style="margin-right: 5px;"></i>Find Cars</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <section class="py-5 bg-white">
+        <div class="container text-center">
+            <h2 class="mb-4 fw-bold">Why Book with AutoHire?</h2>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-4 shadow-sm rounded bg-light h-100">
+                        <i class="bi bi-check-circle-fill fs-2 text-success mb-3"></i>
+                        <h5 class="fw-semibold">Verified Fleet</h5>
+                        <p class="text-muted">All vehicles are verified, regularly inspected, and kept in excellent
+                            condition for your peace of mind.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="p-4 shadow-sm rounded bg-light h-100">
+                        <i class="bi bi-cash-coin fs-2 text-warning mb-3"></i>
+                        <h5 class="fw-semibold">Transparent Pricing</h5>
+                        <p class="text-muted">No hidden fees — what you see is what you pay. Rent confidently with
+                            clear, upfront rates.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="p-4 shadow-sm rounded bg-light h-100">
+                        <i class="bi bi-clock-history fs-2 text-primary mb-3"></i>
+                        <h5 class="fw-semibold">Flexible Bookings</h5>
+                        <p class="text-muted">Reserve for a day or a week. Modify your booking easily and get the
+                            car
+                            that fits your schedule.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-light text-center py-3 mt-5">
+        <div class="container">
+            <small>&copy; {{ current_year }} AutoHire. All rights reserved.</small>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const startInput = document.getElementById("start");
+            const endInput = document.getElementById("end");
+
+            const today = new Date().toISOString().split('T')[0];
+            startInput.min = today;
+
+            startInput.addEventListener("change", function () {
+                endInput.min = startInput.value;
+            });
+        });
+    </script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+
+</html>

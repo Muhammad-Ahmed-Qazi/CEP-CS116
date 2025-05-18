@@ -16,16 +16,9 @@ class Fleet:
             if car.get_vin() == vin:
                 return car
         return None
-    
-    # Setters
-    # def set_car_by_vin(self, vin, car):
-    #     for i, c in enumerate(self.cars):
-    #         if c.get_vin() == vin:
-    #             self.cars[i] = car
-    #             return True
-    #     return False
 
     # Methods
+
     def add_car(self, car):
         if not self.get_cars():
             self.cars = [car]
@@ -35,6 +28,7 @@ class Fleet:
                     print(f"Car with VIN {car.get_vin()} already exists.") # Raise custom exceptions!
                     return False
             self.cars.append(car)
+            print(f"{car.get_model()} Appended!")
     
     def remove_car(self, vin):
         car = self.get_car_by_vin(vin)
