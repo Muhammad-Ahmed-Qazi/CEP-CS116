@@ -1,14 +1,15 @@
 import json
 import os
 
+
 class FileHandler:
     def __init__(self):
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.base_dir = os.path.join(self.base_dir, '../data')
+        self.base_dir = os.path.join(self.base_dir, "../data")
         self.file_map = {
             "cars": "cars.json",
             "users": "users.json",
-            "reservations": "reservations.json"
+            "reservations": "reservations.json",
         }
 
     def get_path(self, data_type):

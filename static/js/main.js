@@ -31,7 +31,6 @@ function login() {
             } else {
                 console.log(data)
                 if (data.error == 'email') {
-
                     document.getElementById('passwordInp').classList.remove("border", "border-danger")
                     document.getElementById('invalidPassword').innerText = ''
                     document.getElementById('emailInp').classList.add("border", "border-danger")
@@ -43,6 +42,8 @@ function login() {
                     document.getElementById('invalidPassword').innerText = data.message
                 }
             }
+        }).catch(err => {
+            console.error('Error:', err);
         });
     // });
 }

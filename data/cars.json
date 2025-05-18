@@ -18,10 +18,7 @@
         "category": "EconomyCar",
         "rental_history": {
             "active": [],
-            "inactive": [
-                "12bcaf21-9dc3-4ca6-9915-d27aca19c113",
-                "b58a73fa-3725-418e-b69b-02d2fa28023c"
-            ]
+            "inactive": []
         },
         "fuel_efficiency": 18.5
     },
@@ -43,11 +40,55 @@
         },
         "category": "LuxuryCar",
         "rental_history": {
-            "active": [
-                "c02993c0-382e-48d8-9f9b-e99181b343c0"
-            ],
+            "active": [],
             "inactive": []
         },
         "chauffeur_available": true
+    },
+    {
+        "vin": "COM987654321TEST01",
+        "model": "Toyota Single Cabin",
+        "base_rate": 5500.0,
+        "img_url": "https://salexport.com/vehicle/102829/images/R110121-2023-Toyota-hilux-33044.jpg",
+        "seating_capacity": 2,
+        "colour": "White",
+        "car_type": "CommercialCar",
+        "features": {
+            "air_conditioning": true,
+            "bluetooth": true,
+            "gps": false,
+            "usb_ports": true,
+            "sunroof": false,
+            "rear_camera": true
+        },
+        "category": "CommercialCar",
+        "rental_history": {
+            "active": [],
+            "inactive": []
+        },
+        "cargo_capacity": 1000.0
+    },
+    {
+        "vin": "ECO123456789TEST02",
+        "model": "Suzuki Cultus",
+        "base_rate": 3000.0,
+        "img_url": "https://cache4.pakwheels.com/system/car_generation_pictures/6014/original/Suzuki_Cultus_-_PNG.png?1635945515",
+        "seating_capacity": 5,
+        "colour": "Blue",
+        "car_type": "EconomyCar",
+        "features": {
+            "air_conditioning": true,
+            "bluetooth": false,
+            "gps": false,
+            "usb_ports": true,
+            "sunroof": false,
+            "rear_camera": true
+        },
+        "category": "EconomyCar",
+        "rental_history": {
+            "active": [],
+            "inactive": []
+        },
+        "fuel_efficiency": 15.0
     }
 ]

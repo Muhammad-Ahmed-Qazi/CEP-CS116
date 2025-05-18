@@ -49,15 +49,11 @@ class RentalSystem:
 
         return user_obj
 
-    def login_user(self, user, password):
-        if user:
-            if not user.check_password(password):
-                return False
-            self.user = user
-            self.isAdmin = user.get_role() == "admin"
-            return True
-        return False
-    
+    def login_user(self, user):
+        print("Logging in user...")
+        self.user = user
+        self.isAdmin = user.get_role() == "admin"
+
     def get_all_users(self):
         users = RentalSystem.fileHandler.load_data("users")
         user_objects = []
@@ -101,6 +97,7 @@ class RentalSystem:
             reservations = user.get_all_reservations()  # Includes active + inactive
 
             for reservation in reservations:
+                reservation = self.get_reservation_by_id(reservation)
                 # Remove reservation from the car
                 car = self.fleet.get_car_by_vin(reservation.get_car_vin())
                 if car:
@@ -146,51 +143,86 @@ class RentalSystem:
 
     # Handling Reservations
     def load_reservations(self):
-        reservations = RentalSystem.fileHandler.load_data("reservations")
-        for reservation in reservations:
-            reservation_obj = Reservation.from_dict(reservation)
-            self.reservations.append(reservation_obj)
-    
+        """Loads unique reservations from the file into memory."""
+        reservations_data = RentalSystem.fileHandler.load_data("reservations")
+        self.reservations = []  # Clear existing
+        seen_ids = set()
+
+        for data in reservations_data:
+            if data["id"] not in seen_ids:
+                reservation_obj = Reservation.from_dict(data)
+                self.reservations.append(reservation_obj)
+                seen_ids.add(data["id"])
+            else:
+                print(f"Duplicate reservation ID skipped: {data['id']}")
+
     def get_all_reservations(self):
-        self.load_reservations()
+        """Returns all in-memory reservations."""
         return self.reservations
 
     def get_reservation_by_id(self, reservation_id):
-        for reservation in self.reservations:
-            if reservation.get_id() == reservation_id:
-                return reservation
-        return None
-
-    def delete_reservation(self, reservation_id):
-        for i in range(len(self.reservations)):
-            if self.reservations[i].get_id() == reservation_id:
-                del self.reservations[i]
-                break
-        RentalSystem.fileHandler.save_data(
-            "reservations", [res.to_dict() for res in self.reservations]
+        """Find and return a reservation by ID."""
+        return next(
+            (res for res in self.reservations if res.get_id() == reservation_id), None
         )
 
-    def make_reservation(self, reservation):
-        reservation = Reservation.from_dict(reservation)
-        reservations = RentalSystem.fileHandler.load_data("reservations")
-        reservations.append(reservation.to_dict())
-        RentalSystem.fileHandler.save_data("reservations", reservations)
+    def add_reservation(self, reservation):
+        """Add a new reservation if it doesn't already exist."""
+        if self.get_reservation_by_id(reservation.get_id()):
+            print(f"Reservation {reservation.get_id()} already exists. Skipping.")
+            return False
+        self.reservations.append(reservation)
+        return True
 
+    def delete_reservation(self, reservation_id):
+        """Delete a reservation by ID."""
+        original_len = len(self.reservations)
+        self.reservations = [
+            r for r in self.reservations if r.get_id() != reservation_id
+        ]
+
+        if len(self.reservations) < original_len:
+            print(f"Reservation {reservation_id} deleted.")
+        else:
+            print(f"Reservation {reservation_id} not found.")
+
+        self.save_reservations()
+
+    def save_reservations(self):
+        """Save all current reservations to file (de-duplicated)."""
+        unique_reservations = {}
+        for r in self.reservations:
+            unique_reservations[r.get_id()] = r  # Keep last occurrence
+
+        reservation_dicts = [r.to_dict() for r in unique_reservations.values()]
+        RentalSystem.fileHandler.save_data("reservations", reservation_dicts)
+        self.reservations = list(unique_reservations.values())  # Refresh in-memory too
+
+    def make_reservation(self, reservation):
+        """Complete a reservation: save, deduct balance, assign to car and user."""
+        reservation = Reservation.from_dict(reservation)
+
+        # Safeguard: Check for duplicate before proceeding
+        if self.get_reservation_by_id(reservation.get_id()):
+            print(f"[!] Reservation {reservation.get_id()} already exists.")
+            return
+
+        self.reservations.append(reservation)
+        self.save_reservations()
+
+        # Update user
         self.user.set_rental_history("active", reservation.get_id())
         self.user.set_balance(self.user.get_balance() - reservation.get_cost())
         self.update_user(self.user)
 
-        self.fleet.get_car_by_vin(reservation.get_car_vin()).set_rental_history(
-            "active", reservation.get_id()
-        )
-        self.fleet.save_cars()
-
-        self.load_reservations()
+        # Update car
+        car = self.fleet.get_car_by_vin(reservation.get_car_vin())
+        if car:
+            car.set_rental_history("active", reservation.get_id())
+            self.fleet.save_cars()
 
     # Other
     def save_all(self, user):
-        RentalSystem.fileHandler.save_data(
-            "reservations", [res.to_dict() for res in self.reservations]
-        )
+        self.save_reservations()
         self.fleet.save_cars()
         self.update_user(user)

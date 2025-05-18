@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date
 from functools import wraps
 from io import BytesIO
@@ -78,17 +79,14 @@ def login():
 
         user = rentalSystem.load_user_by_email(email)
         if user:
-            if rentalSystem.login_user(user, password):
+            if check_password_hash(user.get_password_hash(), password):
+                rentalSystem.login_user(user)  # Optional: you can also just store user
                 session["user_email"] = email
+                print("User logged in:", email)
                 return jsonify({"success": True, "isAdmin": user.get_role()})
             else:
-                return jsonify(
-                    {
-                        "success": False,
-                        "error": "password",
-                        "message": "Invalid password!",
-                    }
-                )
+                return jsonify({"success": False, "error": "password", "message": "Invalid password!"})
+
         else:
             return jsonify(
                 {"success": False, "error": "email", "message": "Email not found!"}
@@ -111,14 +109,15 @@ def register():
         data = request.get_json()
         name = data.get("name")
         email = data.get("email")
-        password = data.get("password")  # Reminder: hash in real apps
+        raw_password = data.get("password")
+        password_hash = generate_password_hash(raw_password)
         role = data.get("role")
         profile_image_url = data.get("profile_image_url", None)
 
         user_data = {
             "name": name,
             "email": email,
-            "password_hash": password,
+            "password_hash": password_hash,
             "role": role,
             "profile_image_url": profile_image_url,
         }
@@ -195,7 +194,7 @@ def edit_profile():
         license_number = request.form.get("license_number").strip()
         license_expiry = request.form.get("license_expiry").strip()
 
-        user.set_balance(balance)
+        user.set_balance(float(balance))
         user.set_license_number(license_number)
         user.set_license_expiry(license_expiry)
 
@@ -255,6 +254,7 @@ def return_car():
 
     # Update reservation and car
     reservation.set_return_date(date.today())
+    reservation.set_status("inactive")
     user.set_rental_history("inactive", reservation.get_id())
     user.set_rental_history("active", None)
     car.set_rental_history("inactive", reservation.get_id())
@@ -304,7 +304,7 @@ def add_car():
     seating_capacity = int(form.get("seating_capacity"))
     colour = form.get("colour")
     car_type = form.get("car_type")  # optional duplication
-    rental_history = {"active": None, "inactive": []}
+    rental_history = {"active": [], "inactive": []}
 
     # Parse features as dict
     features = {

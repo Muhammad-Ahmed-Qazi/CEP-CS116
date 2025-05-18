@@ -1,40 +1,9 @@
 [
     {
-        "name": "Muhammad Ahmed Qazi",
-        "email": "qmuhammadahmed@gmail.com",
-        "password_hash": "test",
-        "role": "user",
-        "profile_image_url": "https://images.unsplash.com/photo-1544502062-f82887f03d1c?q=80&w=2159&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "balance": 4890.0,
-        "license_number": "4250113215642",
-        "license_expiry": "2030-01-01",
-        "rental_history": {
-            "active": null,
-            "inactive": [
-                "12bcaf21-9dc3-4ca6-9915-d27aca19c113",
-                "b58a73fa-3725-418e-b69b-02d2fa28023c"
-            ]
-        }
-    },
-    {
         "name": "Admin",
-        "email": "admin123@auto-hire.com",
-        "password_hash": "admin",
+        "email": "admin@auto-hire.com",
+        "password_hash": "scrypt:32768:8:1$QdIn2Ba47wI9eWaF$5821cfe84afc4c44992cf05ed177554165c2d13177310c83f3f1a2635e011e02fdadec91d98db664187e94844e68c86491ce4f685ce41241011d5e31c8f25adb",
         "role": "admin",
-        "profile_image_url": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    },
-    {
-        "name": "John Doe",
-        "email": "johndoe@gmail.com",
-        "password_hash": "testing",
-        "role": "user",
-        "profile_image_url": "https://images.unsplash.com/photo-1705904506562-f28266845273?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "balance": 54000.0,
-        "license_number": "42506518981",
-        "license_expiry": "2026-01-01",
-        "rental_history": {
-            "active": "c02993c0-382e-48d8-9f9b-e99181b343c0",
-            "inactive": []
-        }
+        "profile_image_url": "https://images.unsplash.com/photo-1544502062-f82887f03d1c?q=80&w=2159&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
 ]
