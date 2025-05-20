@@ -90,5 +90,51 @@
             "inactive": []
         },
         "fuel_efficiency": 15.0
+    },
+    {
+        "vin": "LUX987654321TEST03",
+        "model": "Rolls Royce Phantom",
+        "base_rate": 50000.0,
+        "img_url": "https://www.rolls-roycemotorcarsranchomirage.com/static/dealer-12176/2023-Rolls-Royce-Phantom-Series-II16.jpeg",
+        "seating_capacity": 4,
+        "colour": "White",
+        "car_type": "LuxuryCar",
+        "features": {
+            "air_conditioning": true,
+            "bluetooth": true,
+            "gps": true,
+            "usb_ports": true,
+            "sunroof": true,
+            "rear_camera": true
+        },
+        "category": "LuxuryCar",
+        "rental_history": {
+            "active": [],
+            "inactive": []
+        },
+        "chauffeur_available": true
+    },
+    {
+        "vin": "LUX987654321TEST04",
+        "model": "Ferrari Purosangue",
+        "base_rate": 65000.0,
+        "img_url": "https://car-images.bauersecure.com/wp-images/2672/ferrari_purosangue_30.jpg",
+        "seating_capacity": 5,
+        "colour": "Red",
+        "car_type": "LuxuryCar",
+        "features": {
+            "air_conditioning": true,
+            "bluetooth": true,
+            "gps": true,
+            "usb_ports": true,
+            "sunroof": true,
+            "rear_camera": true
+        },
+        "category": "LuxuryCar",
+        "rental_history": {
+            "active": [],
+            "inactive": []
+        },
+        "chauffeur_available": false
     }
 ]
