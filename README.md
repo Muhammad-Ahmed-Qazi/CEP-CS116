@@ -41,8 +41,9 @@ Make sure you have Python 3.9+ installed.
 python app.py
 ```
 
-Visit `http://localhost:5000` in your browser.
-Please ensure a stable internet connection for the receipt generation upon car reservation to function. The `wkhtmltopdf` module requires an internet connection.
+* Visit `http://localhost:5000` in your browser.
+* Please ensure a stable internet connection for the receipt generation upon car reservation to function. The `wkhtmltopdf` module requires an internet connection.
+
 ---
 
 ## 🛠 Features
